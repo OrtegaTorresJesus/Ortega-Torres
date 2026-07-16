@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ortega&Torres — Instalaciones Eléctricas, Solar y Climatización</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #10151f;
+            --ink-2: #1a2433;
+            --paper: #f1f2ee;
+            --paper-2: #ffffff;
+            --line: #dcddd6;
+            --blue: #1657cc;
+            --blue-light: #3d8bff;
+            --circuit: #2f6f63;
+            --text: #1b2130;
+            --muted: #5c6470;
+            --radius: 10px;
+            --wrap: 1180px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--paper);
+        }
+
+        h1, h2, h3, .logo, .stat-value, .btn, nav a {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        a { color: inherit; }
+
+        img { display: block; max-width: 100%; }
+
+        .wrap {
+            max-width: var(--wrap);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 22px;
+            height: 1px;
+            background: var(--blue);
+            display: inline-block;
+        }
+
+        /* ===== Circuit trace divider (signature element) ===== */
+        .trace {
+            width: 100%;
+            height: 28px;
+            display: block;
+        }
+
+        .trace-light { background: var(--paper); }
+        .trace-dark { background: var(--ink); }
+
+        /* ===== Header ===== */
+        header {
+            background: rgba(16, 21, 31, 0.92);
+            backdrop-filter: blur(6px);
+            color: white;
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        nav {
+            max-width: var(--wrap);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 72px;
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo .bolt {
+            color: var(--blue-light);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2.2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible { opacity: 1; }
+
+        .nav-links a:focus-visible {
+            outline: 2px solid var(--blue-light);
+            outline-offset: 4px;
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--blue);
+            color: white !important;
+            padding: 0.55rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 1 !important;
+            transition: background 0.2s;
+        }
+
+        .nav-cta:hover { background: var(--blue-light); }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            position: relative;
+            background:
+                linear-gradient(120deg, rgba(16,21,31,0.94) 0%, rgba(16,21,31,0.72) 55%, rgba(16,21,31,0.55) 100%),
+                url("/media/placas.jpg");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 168px 0 96px;
+            margin-top: 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.1rem;
+            line-height: 1.12;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .hero h1 span {
+            color: var(--blue-light);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+            max-width: 46ch;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 13px 28px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.98rem;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(200, 121, 46, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: white;
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        .btn-ghost:hover {
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--blue-light);
+            outline-offset: 3px;
+        }
+
+        /* Spec panel */
+        .spec-panel {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .spec-panel-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 1.4rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.9rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .spec-row:first-of-type { border-top: none; }
+
+        .spec-label {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .stat-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .stat-value small {
+            font-size: 0.9rem;
+            color: var(--blue-light);
+        }
+
+        /* ===== Sections ===== */
+        section {
+            padding: 5.5rem 0;
+        }
+
+        .section-head {
+            text-align: center;
+            max-width: 620px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-head .eyebrow { justify-content: center; }
+        .section-head .eyebrow::before { display: none; }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .section-sub {
+            color: var(--muted);
+            font-size: 1.05rem;
+            margin-top: 0.75rem;
+        }
+
+        /* About */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 3.5rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            margin-bottom: 1.1rem;
+            font-size: 1.04rem;
+            color: var(--text);
+        }
+
+        .about-features {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .feature {
+            background: var(--paper-2);
+            padding: 1.3rem 1.4rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature-switch {
+            width: 10px;
+            min-width: 10px;
+            height: 34px;
+            border-radius: 5px;
+            background: var(--blue);
+            margin-top: 0.15rem;
+        }
+
+        .feature h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            color: var(--ink);
+        }
+
+        .feature p {
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+
+        /* Services */
+        .services {
+            background: var(--paper-2);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--paper);
+            padding: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(16, 21, 31, 0.08);
+            border-color: var(--blue-light);
+        }
+
+        .service-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 8px;
+            background: var(--ink);
+            color: var(--blue-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .service-card h3 {
+            color: var(--ink);
+            margin-bottom: 0.6rem;
+            font-size: 1.12rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 240px;
+            gap: 1.25rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            inset: auto 0 0 0;
+            padding: 1.6rem 1.1rem 1rem;
+            background: linear-gradient(0deg, rgba(16,21,31,0.85) 0%, transparent 100%);
+            color: white;
+            font-size: 0.92rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.25s, transform 0.25s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* CTA strip */
+        .cta-strip {
+            background: var(--ink);
+            color: white;
+            padding: 3.2rem 0;
+        }
+
+        .cta-strip .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .cta-strip h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .cta-strip p {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Contact */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: var(--ink);
+            color: white;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+        }
+
+        .contact-card h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .info-item {
+            margin-bottom: 1.4rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            width: 40px;
+            min-width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        .info-item a {
+            text-decoration: none;
+            color: white;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.98rem;
+        }
+
+        .info-item .label {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.55);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .contact-secondary {
+            background: var(--paper-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-secondary h3 {
+            color: var(--ink);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-secondary p {
+            color: var(--muted);
+            margin-bottom: 1.6rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--ink);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 2.2rem 0 2.6rem;
+            font-size: 0.88rem;
+        }
+
+        footer strong { color: white; }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; scroll-behavior: auto !important; }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .about-content,
+            .contact-container { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: var(--ink);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.5rem 2rem;
+                gap: 1.2rem;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                transform: translateY(-130%);
+                transition: transform 0.3s ease;
+            }
+
+            .menu-toggle:checked ~ .nav-links {
+                transform: translateY(0);
+            }
+
+            .menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.6rem;
+                cursor: pointer;
+                line-height: 1;
+            }
+
+            .hero { padding: 148px 0 72px; }
+            .hero h1 { font-size: 2.1rem; }
+            .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; }
+            .cta-strip .wrap { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#inicio" class="logo"><span class="bolt">⚡</span>Ortega&amp;Torres</a>
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="menu-btn" aria-label="Abrir menú">☰</label>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="tel:+34661512862" class="nav-cta">📞 661 51 28 62</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="wrap">
+            <div class="hero-grid">
+                <div>
+                    <div class="eyebrow" style="color:var(--blue-light)">Electricistas certificados · Granada</div>
+                    <h1>Instalaciones eléctricas que <span>funcionan a la primera</span>.</h1>
+                    <p>Más de 20 años de experiencia en instalaciones, mantenimiento y proyectos de energía para hogares, comercios e industria.</p>
+                    <div class="hero-actions">
+                        <a href="#contacto" class="btn btn-primary">Pedir presupuesto</a>
+                        <a href="tel:+34661512862" class="btn btn-ghost">📞 Llamar ahora</a>
+                    </div>
+                </div>
+                <div class="spec-panel">
+                    <div class="spec-panel-title"><span>Ficha técnica</span><span>OT-01</span></div>
+                    <div class="spec-row">
+                        <span class="spec-label">Experiencia</span>
+                        <span class="stat-value">20<small>+ años</small></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Atención a emergencias</span>
+                        <span class="stat-value">24<small>/7</small></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Garantía en trabajos</span>
+                        <span class="stat-value">100<small>%</small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <svg class="trace trace-light" viewBox="0 0 1180 28" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 14 H520 L540 4 H640 L660 24 H1180" fill="none" stroke="#dcddd6" stroke-width="1.5"/>
+        <circle cx="540" cy="4" r="3" fill="#1657cc"/>
+        <circle cx="660" cy="24" r="3" fill="#2f6f63"/>
+    </svg>
+
+    <!-- About -->
+    <section id="nosotros">
+        <div class="wrap">
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="eyebrow">Quiénes somos</div>
+                    <h2 style="text-align:left; margin-bottom:1.4rem;">Un equipo técnico en el que se puede confiar</h2>
+                    <p>En <strong>Ortega&amp;Torres</strong> somos una empresa especializada en servicios eléctricos con más de dos décadas de experiencia. Trabajamos tanto en hogares como en empresas, garantizando siempre calidad y seguridad en cada proyecto.</p>
+                    <p>Nuestro equipo está formado por profesionales certificados, comprometidos con la excelencia y la satisfacción del cliente. Utilizamos tecnología actualizada y cumplimos con rigor toda la normativa vigente.</p>
+                    <p>Desde pequeñas reparaciones hasta grandes proyectos industriales, somos el socio adecuado para cualquier necesidad eléctrica.</p>
+                </div>
+                <div class="about-features">
+                    <div class="feature">
+                        <div class="feature-switch"></div>
+                        <div>
+                            <h3>Experiencia garantizada</h3>
+                            <p>Más de 20 años en el sector eléctrico.</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-switch"></div>
+                        <div>
+                            <h3>Equipo certificado</h3>
+                            <p>Profesionales cualificados y homologados.</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-switch"></div>
+                        <div>
+                            <h3>Disponibilidad 24/7</h3>
+                            <p>Servicio de emergencias a cualquier hora.</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-switch"></div>
+                        <div>
+                            <h3>Garantía total</h3>
+                            <p>Respaldo en todos nuestros trabajos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="servicios" class="services">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="eyebrow">Qué hacemos</div>
+                <h2>Nuestros servicios</h2>
+                <p class="section-sub">Soluciones completas de electricidad, energía y climatización, con un solo interlocutor.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3>Instalaciones eléctricas</h3>
+                    <p>Diseño e instalación de sistemas eléctricos completos para viviendas, oficinas y locales comerciales.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔧</div>
+                    <h3>Mantenimiento preventivo</h3>
+                    <p>Revisiones periódicas para garantizar el correcto funcionamiento y la seguridad de tu instalación.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏭</div>
+                    <h3>Instalaciones industriales</h3>
+                    <p>Soluciones eléctricas para naves, fábricas y grandes instalaciones de alta potencia.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💡</div>
+                    <h3>Iluminación LED</h3>
+                    <p>Sistemas de iluminación eficientes que reducen el consumo energético hasta un 80%.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏠</div>
+                    <h3>Domótica y Telecomunicaciones</h3>
+                    <p>Automatización del hogar para controlar iluminación, climatización y seguridad desde el móvil.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔌</div>
+                    <h3>Puntos de recarga VE</h3>
+                    <p>Instalación de cargadores para vehículos eléctricos en garajes particulares y comunitarios.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📋</div>
+                    <h3>Certificaciones</h3>
+                    <p>Boletines eléctricos y certificaciones necesarias para cumplir con la normativa vigente.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔆</div>
+                    <h3>Instalaciones fotovoltaicas</h3>
+                    <p>Diseño e instalación de paneles solares de autoconsumo para reducir tu factura eléctrica.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">❄️</div>
+                    <h3>Aire acondicionado</h3>
+                    <p>Instalación y mantenimiento de equipos de climatización para hogar y negocio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="galeria">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="eyebrow">Trabajo realizado</div>
+                <h2>Galería de proyectos</h2>
+                <p class="section-sub">Una muestra de instalaciones ejecutadas por nuestro equipo.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="media/3.jpeg" alt="Instalación eléctrica residencial">
+                    <div class="gallery-caption">Aires Acondicionados</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/7.jpeg" alt="Instalación residencial">
+                    <div class="gallery-caption">Iluminación LED</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/6.jpeg" alt="Mantenimiento preventivo eléctrico">
+                    <div class="gallery-caption">Puntos de recarga VE</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/4.jpeg" alt="Proyecto industrial eléctrico">
+                    <div class="gallery-caption">si</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/2.jpeg" alt="Cargador de vehículo eléctrico">
+                    <div class="gallery-caption">si</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/1.jpeg" alt="Instalación fotovoltaica">
+                    <div class="gallery-caption">Instalación fotovoltaica</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA strip -->
+    <div class="cta-strip">
+        <div class="wrap">
+            <div>
+                <h3>¿Necesitas ayuda urgente?</h3>
+                <p>Atendemos emergencias eléctricas las 24 horas, los 7 días de la semana.</p>
+            </div>
+            <a href="tel:+34661512862" class="btn btn-primary">📞 661 51 28 62</a>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <section id="contacto">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="eyebrow">Hablemos</div>
+                <h2>Contacto</h2>
+                <p class="section-sub">Cuéntanos qué necesitas y te responderemos lo antes posible.</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-card">
+                    <h3>Información de contacto</h3>
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div>
+                            <span class="label">Teléfono</span>
+                            <a href="tel:+34661512862">+34 661 51 28 62</a>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div>
+                            <span class="label">Email</span>
+                            <a href="mailto:ortegaguerramariano@gmail.com">ortegaguerramariano@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🕐</div>
+                        <div>
+                            <span class="label">Horario</span>
+                            <span style="font-family:'IBM Plex Mono', monospace; font-size:0.95rem;">Lun–Vie 8:00–15:00 · Emergencias 24h</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-secondary">
+                    <h3>¿Prefieres que te llamemos?</h3>
+                    <p>Escríbenos por WhatsApp o llámanos directamente y te atenderemos personalmente para valorar tu proyecto sin compromiso.</p>
+                    <a href="https://wa.me/34661512862" target="_blank" class="btn btn-primary" style="align-self:flex-start;">Escribir un mensaje</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <svg class="trace trace-dark" viewBox="0 0 1180 28" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 14 H520 L540 4 H640 L660 24 H1180" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <circle cx="540" cy="4" r="3" fill="#3d8bff"/>
+        <circle cx="660" cy="24" r="3" fill="#2f6f63"/>
+    </svg>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <strong>Ortega&amp;Torres</strong>. Todos los derechos reservados. Servicios eléctricos profesionales.</p>
+    </footer>
+</body>
+
+</html>
